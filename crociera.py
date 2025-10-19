@@ -22,29 +22,54 @@ class Crociera:
             if len(riga)==3:
                 p=Passeggero(riga[0],riga[1],riga[2])
                 self.passeggeri.append(p)
-                return p
             if len(riga)==4:
                 cabina=Cabine(riga[0],riga[1],riga[2],int(riga[3]))
                 self.cabine.append(cabina)
-                return cabina
             if len(riga)==5:
                 if riga[4].isdigit():
-                    ca=CabineAnimali(riga[0],riga[1],riga[2],int(riga[3]),int(riga[4]))
-                    ca.sovraprezzo()
+                    ca=CabineAnimali(riga[0],riga[1],riga[2],float(riga[3]),float(riga[4]))
+                    _=ca.prezzo_finale
                     self.cabine.append(ca)
-                    return ca
                 else:
-                    cd=Deluxe(riga[0],riga[1],riga[2],int(riga[3]),riga[4])
-                    cd.sovraprezzo()
+                    cd=Deluxe(riga[0],riga[1],riga[2],float(riga[3]),riga[4])
+                    _ =cd.prezzo_finale
                     self.cabine.append(cd)
-                    return cd
-
+        for c in self.cabine:
+            print(c)
+        for p in self.passeggeri:
+            print(p)
 
 
 
     def assegna_passeggero_a_cabina(self, codice_cabina, codice_passeggero):
         """Associa una cabina a un passeggero"""
         # TODO
+        passeggero_trovato = None
+        cabina_trovata = None
+
+        for p in self.passeggeri:
+            if p.codice_passeggero == codice_passeggero:
+                passeggero_trovato = p
+                break
+
+        if passeggero_trovato is None:
+            raise Exception('Passeggero non trovato')
+
+        if passeggero_trovato.cabina is not None and passeggero_trovato.cabina is not None:
+            raise Exception('Passeggero già assegnato a un’altra cabina')
+        for c in self.cabine:
+            if c.cod_c == codice_cabina:
+                cabina_trovata = c
+                break
+
+        if cabina_trovata is None:
+            raise Exception('Cabina non trovata')
+
+        if cabina_trovata.disponibile == False:
+            raise Exception('Cabina già occupata')
+
+        passeggero_trovato.assegna_cabina(cabina_trovata)
+        cabina_trovata.disponibile = False
 
     def cabine_ordinate_per_prezzo(self):
         """Restituisce la lista ordinata delle cabine in base al prezzo"""
