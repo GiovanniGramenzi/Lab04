@@ -7,4 +7,5 @@ class Passeggero:
     def assegna_cabina(self,cabina):
         self.cabina=cabina
     def __str__(self):
-        return f' {self.codice_passeggero}, {self.nome}, {self.cognome}'
+        cabina=self.cabina if self.cabina else 'non ha una cabina'
+        return f' {self.codice_passeggero}, {self.nome}, {self.cognome}, {cabina}'
